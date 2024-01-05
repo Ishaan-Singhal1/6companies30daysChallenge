@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int m,n;
+    int r=0,c=0;
+
+    Solution(int m, int n) {
+        this -> m = m;
+        this -> n = n;
+    }
+    
+    vector<int> flip() {
+        vector<int>result={r,c};
+        c++;
+        if(c==n){
+            c=0;
+            r++;
+            if(r==m){
+            r=0;
+        }
+        }
+        if(r==m){
+            r=0;
+        }
+        return result;
+    }
+    
+    void reset() {
+        // no need to do anything here (already taken care in flip())
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(m, n);
+ * vector<int> param_1 = obj->flip();
+ * obj->reset();
+ */
