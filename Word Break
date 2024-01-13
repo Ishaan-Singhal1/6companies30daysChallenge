@@ -1,0 +1,33 @@
+class Solution {
+public:
+    unordered_set<string> memo;
+    bool search(const string& word, const vector<string>& dict) {
+        return find(dict.begin(), dict.end(), word) != dict.end();
+    }
+
+    bool solve(int ind,int n, string s, vector<string>& dict, string temp){
+        if(ind == n){
+            if(temp==s){
+                return true;
+            }
+            return false;
+        }
+        if (memo.count(temp)) {
+            return false;  
+        }
+        for(int i=ind;i<n;i++){
+            string t=s.substr(ind,i-ind+1);
+            if(search(t,dict)){
+                if(solve(i+1,n,s,dict,temp+t)){
+                    return true;
+                }
+            }
+        }
+        memo.insert(temp); 
+        return false;
+    }
+
+    bool wordBreak(string s, vector<string>& wordDict) {
+        return solve(0,s.size(),s, wordDict,"");
+    }
+};
