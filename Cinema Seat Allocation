@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int maxNumberOfFamilies(int n, vector<vector<int>>& reservedSeats) {
+        unordered_map<int,bool> left;
+        unordered_map<int,bool> right;
+        unordered_map<int,bool> middle;
+        int ans=2*n;
+        for(auto seat:reservedSeats){
+            //check for left, it it is not marked mark it ans remove 1 from answer
+            if(seat[1]==2 || seat[1]==3 || seat[1]==4 || seat[1]==5){
+                    if(!left[seat[0]]){
+                        left[seat[0]]=true;
+                        ans-=1;
+                    }
+            }
+            //check for right
+            if(seat[1]==6 || seat[1]==7 || seat[1]==8 || seat[1]==9){
+                if(!right[seat[0]]){
+                    right[seat[0]]=true;
+                    ans-=1;
+                }
+            }
+            //mark middle as true
+            if(seat[1]==4 || seat[1]==5 || seat[1]==6 || seat[1]==7){
+                middle[seat[0]]=true;
+            }
+        }
+
+        //check if middle is unmarked and right and left are marked, add 1 to answer
+        for(auto seat:reservedSeats){
+            if(!middle[seat[0]] && right[seat[0]] && left[seat[0]]){
+                middle[seat[0]]=true;
+                ans+=1;
+            }
+        }
+        return ans;
+
+
+    }
+};
