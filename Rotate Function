@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int maxRotateFunction(vector<int>& nums) {
+        int n=nums.size();
+        int product=0;
+        int total = 0;
+        //calculate F(0)
+        for(int i=0;i<n;i++){
+            product += nums[i]*i;
+            total += nums[i];
+        }
+
+        int ans = product;
+        //Running a loop(slding window) where we add total to product and subtract the last num * n. (for sum calculated at rotation-(i-1) (it is called as pre), we are adding sum of array elements to it(sum) & subtracting (n*element of nums))
+        for(int i=1;i<n;i++){
+            product += (total - nums[n-i] * n);
+            ans = max(ans,product);
+        }
+        return ans;
+    }
+};
