@@ -1,0 +1,43 @@
+class Solution {
+    long long dp[1111][1 << 11];
+    long long mod;
+public:
+    vector<int> primes;
+    long long solve(long long num) {
+        long long mask = 0;
+        for(int i = 0; i < 10; i++) {
+            int tim = 0;
+            while(num % primes[i] == 0) {
+                tim += 1;
+                num /= primes[i];
+            }
+            if(tim > 1) {
+				return -1;
+            }
+            if(tim == 1) {
+				mask |= (1 << (i + 1)); 
+            }
+        }
+        return mask;
+    }
+
+    long long search(int ind, long long prodmask, vector<int> &nums) {
+        if(ind >= nums.size()) return 1;
+        if(dp[ind][prodmask] != -1) return dp[ind][prodmask];
+        
+        long long mask = solve(nums[ind]);
+        long long ans = search(ind + 1, prodmask, nums);
+        
+        if((prodmask & mask) == 0) {
+            ans = (ans + search(ind + 1, prodmask | mask, nums)) % mod;
+        }
+        return dp[ind][prodmask] = ans;
+    }
+
+    int squareFreeSubsets(vector<int>& nums) {
+        mod = 1e9 + 7;
+        memset(dp, -1, sizeof dp);
+        primes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+        return (search(0, 1, nums) - 1 + mod) % mod; 
+    }
+};
